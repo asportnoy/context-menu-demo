@@ -1,30 +1,55 @@
-import { Injector, Logger, components, types } from "replugged";
+import { Injector, common, components, types, webpack } from "replugged";
+import { Channel, Guild } from "discord-types/general";
 const { ContextMenuTypes } = types;
 const {
   ContextMenu: { MenuItem },
 } = components;
+const {
+  constants: { Permissions },
+} = common;
+const { waitForProps } = webpack;
 
 const injector = new Injector();
-const logger = Logger.plugin("dev.asportnoy.ContextMenuDemo");
 
-export function start() {
-  injector.utils.addMenuItem(
-    ContextMenuTypes.UserContext, // Right-clicking a user
-    (data, menu) => {
-      return (
-        <MenuItem
-          id="my-item"
-          label="An Item!"
-          action={() =>
-            logger.log("User context menu item clicked!", {
-              data,
-              menu,
-            })
-          }
-        />
-      );
-    },
+type ThreadMod = {
+  archiveThread: (threadId: string) => Promise<void>;
+  lockThread: (threadId: string) => Promise<void>;
+};
+
+type CanMod = {
+  can: (permission: BigInt, channel: Channel | Guild) => boolean;
+  getChannelPermissions: (channel: Channel | Guild) => BigInt;
+};
+
+type ThreadMenuType = {
+  channel: Channel;
+};
+
+export async function start() {
+  const { archiveThread, lockThread } = await waitForProps<keyof ThreadMod, ThreadMod>(
+    "archiveThread",
+    "lockThread",
   );
+  const { can } = await waitForProps<keyof CanMod, CanMod>("can", "getChannelPermissions");
+
+  injector.utils.addMenuItem<ThreadMenuType>(ContextMenuTypes.ThreadContext, (data) => {
+    const { channel } = data;
+    const { archived, locked } = channel.threadMetadata;
+    const canManage = can(Permissions!.MANAGE_THREADS, channel);
+    if (archived || locked || !canManage) {
+      return undefined;
+    }
+    return (
+      <MenuItem
+        id="close-and-lock"
+        label="Close and lock thread"
+        action={async () => {
+          await lockThread(channel.id);
+          await archiveThread(channel.id);
+        }}
+      />
+    );
+  });
 }
 
 export function stop() {
