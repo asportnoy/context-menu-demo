@@ -26,3 +26,7 @@ export function start() {
     },
   );
 }
+
+export function stop() {
+  injector.uninjectAll();
+}
