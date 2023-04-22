@@ -1,18 +1,18 @@
 {
-  "id": "dev.replugged.PluginTemplate",
-  "name": "Plugin Template",
-  "description": "A plugin template",
+  "id": "dev.albertp.ContextMenuDemo",
+  "name": "Context Menu Demo",
+  "description": "Example/test plugin for the Replugged Context Menu API",
   "author": {
-    "name": "replugged",
-    "discordID": "1000992611840049192",
-    "github": "replugged-org"
+    "name": "asportnoy",
+    "discordID": "489484338514100234",
+    "github": "asportnoy"
   },
   "version": "1.0.0",
   "updater": {
     "type": "github",
-    "id": "replugged-org/plugin-template"
+    "id": "asportnoy/context-menu-demo"
   },
   "license": "MIT",
   "type": "replugged-plugin",
-  "renderer": "src/index.ts"
+  "renderer": "src/index.tsx"
 }
