@@ -35,7 +35,7 @@ export async function start() {
   injector.utils.addMenuItem<ThreadMenuType>(ContextMenuTypes.ThreadContext, (data) => {
     const { channel } = data;
     const { archived, locked } = channel.threadMetadata;
-    const canManage = can(Permissions!.MANAGE_THREADS, channel);
+    const canManage = can(Permissions.MANAGE_THREADS, channel);
     if (archived || locked || !canManage) {
       return undefined;
     }
