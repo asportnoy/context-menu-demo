@@ -17,8 +17,8 @@ type ThreadMod = {
 };
 
 type CanMod = {
-  can: (permission: BigInt, channel: Channel | Guild) => boolean;
-  getChannelPermissions: (channel: Channel | Guild) => BigInt;
+  can: (permission: bigint, channel: Channel | Guild) => boolean;
+  getChannelPermissions: (channel: Channel | Guild) => bigint;
 };
 
 type ThreadMenuType = {
