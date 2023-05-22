@@ -8,15 +8,15 @@ const injector = new Injector();
 
 export function start() {
   const getItem: GetContextItem = (data, menu) => {
-    // return (
-    //   <MenuGroup>
-    //     <MenuItem
-    //       label="An item" // What shows to the user
-    //       id="id"
-    //       action={() => console.log(data, menu)} // What gets called when the item is clicked
-    //     />
-    //   </MenuGroup>
-    // );
+    return (
+      <MenuGroup>
+        <MenuItem
+          label="An item" // What shows to the user
+          id="id"
+          action={() => console.log(data, menu)} // What gets called when the item is clicked
+        />
+      </MenuGroup>
+    );
   };
 
   // Registering the item
@@ -72,17 +72,14 @@ export function start() {
   );
 
   // Let's say you hate the copy-id button even existing, and want to remedy that
-  injector.utils.addMenuItem<{ children: unknown }>(
-    ContextMenuTypes.GuildContext,
-    (data, menu: { children: [] }) => {
-      // Simply edit the menu, and it'll no longer appear
-      console.log(menu);
-      menu.children.pop();
+  injector.utils.addMenuItem<{ children: unknown }>(ContextMenuTypes.GuildContext, (data, menu) => {
+    // Simply edit the menu, and it'll no longer appear
+    console.log(menu);
+    menu.children.pop();
 
-      // We don't want to show an item, so we simply return nothing
-      // Anything falsy can be returned in place of an item, and discord ignores it
-    },
-  );
+    // We don't want to show an item, so we simply return nothing
+    // Anything falsy can be returned in place of an item, and discord ignores it
+  });
 }
 
 export function stop() {
